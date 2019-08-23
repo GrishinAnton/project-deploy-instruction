@@ -31,6 +31,7 @@
 
 1. **Устанавливаем curl**
 	  -  `sudo apt-get update && sudo apt-get install curl`
+
 **==**
 1. **Ставим NodeJs**    
 	- Переходим в корень cd ~
@@ -130,7 +131,7 @@
 4.  Ставим права на папку storage для nginx
 	-  `sudo chgrp -R www-data ./storage/`
 	-  `sudo chmod -R 775 ./storage`
-5. git config core.fileMODE false - если добавились файлы из storage
+5. `git config core.fileMODE false` - если добавились файлы из storage
 6.  Laravel
 	- php artisan key:generate
 	- php artisan migrate
@@ -141,4 +142,3 @@
 **С горем пополам, через все перепетии, проект должен запуститься:)**
 # Настройка circleci
 # Настройка деплоя
-
