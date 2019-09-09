@@ -1,0 +1,42 @@
+develop:
+  hostname: host.ru
+  user: github-deploy
+  port: 22
+  configFile: ~/.ssh/config
+  identityFile: ~/.ssh/id_rsa_ghd.private
+  forwardAgent: true
+  multiplexing: true
+  sshOptions:
+    UserKnownHostsFile: /dev/null
+    StrictHostKeyChecking: no
+  branch: develop
+  stage: develop
+  deploy_path: /var/www/stage-alpha.host.ru
+pre_production:
+  hostname: host.ru
+  user: github-deploy
+  port: 22
+  configFile: ~/.ssh/config
+  identityFile: ~/.ssh/id_rsa_ghd.private
+  forwardAgent: true
+  multiplexing: true
+  sshOptions:
+    UserKnownHostsFile: /dev/null
+    StrictHostKeyChecking: no
+  branch: master
+  stage: pre_production
+  deploy_path: /var/www/stage-prod.host.ru
+production:
+  hostname: host.ru
+  user: github-deploy
+  port: 22
+  configFile: ~/.ssh/config
+  identityFile: ~/.ssh/id_rsa_ghd.private
+  forwardAgent: true
+  multiplexing: true
+  sshOptions:
+    UserKnownHostsFile: /dev/null
+    StrictHostKeyChecking: no
+  branch: master
+  stage: production
+  deploy_path: /var/www/production.host.ru

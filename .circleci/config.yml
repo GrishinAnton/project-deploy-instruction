@@ -1,0 +1,98 @@
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: nikitakiselev/circleci-php7.2-image:1.0
+      environment:
+        APP_ENV: testing
+        APP_DEBUG: true
+        APP_LOG_LEVEL: debug
+
+        DB_USERNAME: root
+        DB_HOST: '127.0.0.1'
+        DB_DATABASE: iflorist_testing
+        DB_PASSWORD: ''
+
+    - image: circleci/mysql:5.7
+      environment:
+        MYSQL_ALLOW_EMPTY_PASSWORD: yes
+        MYSQL_ROOT_PASSWORD: ''
+        MYSQL_DATABASE: iflorist_testing
+        #MYSQL_TCP_PORT: 31307
+    - image: redis
+
+version: 2
+jobs:
+  build:
+    branches:
+      only:
+        - master
+        - develop
+        - /release.*/
+
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install BCMath
+          command: docker-php-ext-install bcmath
+
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "composer.lock" }}
+            - composer-v1-
+
+      - run:
+          name: Composer Install
+          command: composer install -n --prefer-dist
+
+      - save_cache:
+          key: composer-v1-{{ checksum "composer.lock" }}
+          paths:
+            - vendor
+
+      - run:
+          name: Laravel Initialization
+          command: |
+            cp .env.circleci .env
+            php artisan key:generate
+            php artisan cache:clear
+
+      - run:
+          name: Migrations And Seeds
+          command: |
+            dockerize -wait tcp://127.0.0.1:3306 -timeout 120s \
+             && php artisan migrate --step && php artisan db:seed
+
+      - run:
+          name: Run Tests Suite
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s && ./vendor/bin/phpunit
+
+      - run:
+          name: Run deployment
+          command: |
+            chmod +x ./deployment/scripts/install_deployer.sh
+            chmod +x ./deployment/scripts/decrypt_credentials.sh
+            chmod +x ./deployment/scripts/ci_deploy.sh
+            ./deployment/scripts/ci_deploy.sh
+          no_output_timeout: 20m
+      - run:
+          name: Upload Failed Tests
+          command:  |
+            echo "Sending request to webhook of discord"
+
+            curl -H "Content-Type: application/json" -X POST -d "{\"content\":\"@here Уважаемые коллеги, сборка ебнулась! Аларм!\"}" "https://discordapp.com/api/webhooks/603936391256342538/$notify_discord_iflorist"
+
+            echo "Success!"
+
+          when: on_fail
+      - run:
+          name: Upload Success Tests
+          command:  |
+            echo "Sending request to webhook of discord"
+
+            curl -H "Content-Type: application/json" -X POST -d "{\"content\":\"Уважаемые коллеги, сборка прошла успешно! Збц!\"}" "https://discordapp.com/api/webhooks/603936391256342538/$notify_discord_iflorist"
+
+            echo "Success!"
+          when: on_success

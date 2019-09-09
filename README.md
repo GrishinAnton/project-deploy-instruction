@@ -1,5 +1,13 @@
 # Настройка сервера
 На сервере стоит Ubunta 16+ 
+**Папки и файлы:**
+	- circleci - конфигурационный файл для circleci
+	- bash_scripts - файлы с разными скриптами
+	- deployment - ssh, настройка hosts deployer, скрипты настройки ssh соединения
+	- recipe - файлы с рецептами для deployer - актуальные на github deployer'a
+	- deploy.php - конфигурационный файл deployer'a
+	- deploy.sh - запуск кастомных скриптов 
+	- shipitfile.js - пакет, если надо депллоить только фронт
 
  1. **Установка mysql**
 	- [search](https://www.google.ru/search?q=mysql+install+ubuntu&oq=mysql+install+ubu&aqs=chrome.0.0j69i57j0l4.9128j0j7&client=ubuntu&sourceid=chrome&ie=UTF-8)
@@ -140,5 +148,3 @@
 9.  Собираем продакшн `npm run prod`
     
 **С горем пополам, через все перепетии, проект должен запуститься:)**
-# Настройка circleci
-# Настройка деплоя
