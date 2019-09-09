@@ -1,4 +1,6 @@
 # Настройка сервера
+**Презентация: [Презентация](https://docs.google.com/presentation/d/11tVNzv5fp7Qx53RD1erP6tNmGh0-BtzyebxIvsGqmIo/edit?usp=sharing)**
+
 На сервере стоит Ubunta 16+ 
 
 **Папки и файлы:**
