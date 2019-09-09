@@ -5,7 +5,7 @@
 
 	- circleci - конфигурационный файл для circleci
 	- bash_scripts - файлы с разными скриптами
-	- deployment - ssh, настройка hosts deployer, скрипты настройки ssh соединения
+	- deployment - ssh, настройка hosts deployer, скрипты настройки ssh соединения. Криптование ssh через travis-encrypt
 	- recipe - файлы с рецептами для deployer - актуальные на github deployer'a
 	- deploy.php - конфигурационный файл deployer'a
 	- deploy.sh - запуск кастомных скриптов 
